@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"github.com/victorlabussiere/go-echo-gorm-example/internal/database/dberrors"
 	"github.com/victorlabussiere/go-echo-gorm-example/internal/model"
 )
 
@@ -26,8 +27,12 @@ func (s *EchoServer) AddCustomer(ctx echo.Context) error {
 
 	customer, err := s.DB.AddCustomer(ctx.Request().Context(), customer)
 	if err != nil {
-		log.Fatal(err.Error())
-		return ctx.JSON(http.StatusInternalServerError, err)
+		switch err.(type) {
+		case *dberrors.ConflictError:
+			return ctx.JSON(http.StatusConflict, err)
+		default:
+			return ctx.JSON(http.StatusInternalServerError, err)
+		}
 	}
 
 	return ctx.JSON(http.StatusCreated, customer)
