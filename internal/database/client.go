@@ -21,6 +21,8 @@ type DatabaseClient interface {
 
 	GetAllProducts(ctx context.Context) ([]model.Product, error)
 	AddProduct(ctx context.Context, product *model.Product) (*model.Product, error)
+
+	AddPurchase(ctx context.Context, purchase *model.Purchase) (*model.Purchase, error)
 }
 
 type Client struct {

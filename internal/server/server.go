@@ -18,6 +18,8 @@ type Server interface {
 	AddCustomer(ctx echo.Context) error
 	GetAllProducts(ctx echo.Context) error
 	AddProduct(ctx echo.Context) error
+
+	AddPurchase(ctx echo.Context) error
 }
 
 type EchoServer struct {
@@ -42,13 +44,16 @@ func (e *EchoServer) registerRoutes() {
 	e.echo.GET("/readiness", e.Readiness)
 	e.echo.GET("/liveness", e.Liveness)
 
-	cg := e.echo.Group("/customers")
-	cg.GET("", e.GetAllCustomers)
-	cg.POST("", e.AddCustomer)
+	customersGroup := e.echo.Group("/customers")
+	customersGroup.GET("", e.GetAllCustomers)
+	customersGroup.POST("", e.AddCustomer)
 
-	pg := e.echo.Group("/products")
-	pg.GET("", e.GetAllProducts)
-	pg.POST("", e.AddProduct)
+	productsGroup := e.echo.Group("/products")
+	productsGroup.GET("", e.GetAllProducts)
+	productsGroup.POST("", e.AddProduct)
+
+	purchaseGroup := e.echo.Group("/purchase")
+	purchaseGroup.POST("", e.AddPurchase)
 }
 
 // implementações da interface Server
