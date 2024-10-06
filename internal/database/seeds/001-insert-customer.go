@@ -13,14 +13,12 @@ func (c *InsertInitialCustomers) Up(db *gorm.DB) error {
 	log.Println("Inserindo seed 001")
 	customers := []model.Customer{
 		{
-			ID:        1,
 			Name:      "Victor Labussiere",
 			Email:     "victor.dev@email.com",
 			CreatedAt: nil,
 			UpdatedAt: nil,
 		},
 		{
-			ID:        2,
 			Name:      "Ana Julia",
 			Email:     "ana.julia@email.com",
 			CreatedAt: nil,
@@ -42,5 +40,5 @@ func (c *InsertInitialCustomers) Up(db *gorm.DB) error {
 
 func (c *InsertInitialCustomers) Down(db *gorm.DB) error {
 	log.Println("Revertendo seed 001")
-	return db.Where("id IN ?", []int{1, 2}).Delete(&model.Customer{}).Error
+	return db.Where("email IN ?", []string{"victor.dev@email.com", "ana.julia@email.com"}).Delete(&model.Customer{}).Error
 }
