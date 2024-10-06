@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/victorlabussiere/go-echo-gorm-example/internal/database/migrations"
+	"github.com/victorlabussiere/go-echo-gorm-example/internal/database/seeds"
 	"github.com/victorlabussiere/go-echo-gorm-example/internal/model"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -55,7 +56,9 @@ func NewDatabaseClient() (DatabaseClient, error) {
 
 	log.Println("Conexão om banco realizada com sucesso.")
 	migrations.RunMigrations(db)
-	// migrations.RollBackMigrations(db)
+	seeds.RunSeeds(db)
+	// seeds.RollbackSeeds(db) // rollback seeds -> manter comentado
+	// migrations.RollBackMigrations(db) // rollback migrations -> manter comentado
 
 	return client, nil
 }
