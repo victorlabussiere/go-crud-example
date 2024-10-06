@@ -18,6 +18,7 @@ type DatabaseClient interface {
 
 	GetAllCustomers(ctx context.Context) ([]model.Customer, error)
 	GetAllProducts(ctx context.Context) ([]model.Product, error)
+	AddCustomer(ctx context.Context, customer *model.Customer) (*model.Customer, error)
 }
 
 type Client struct {
@@ -57,7 +58,7 @@ func NewDatabaseClient() (DatabaseClient, error) {
 	log.Println("Conexão om banco realizada com sucesso.")
 	migrations.RunMigrations(db)
 	seeds.RunSeeds(db)
-	// seeds.RollbackSeeds(db) // rollback seeds -> manter comentado
+	// seeds.RollbackSeeds(db)           // rollback seeds -> manter comentado
 	// migrations.RollBackMigrations(db) // rollback migrations -> manter comentado
 
 	return client, nil

@@ -15,6 +15,7 @@ type Server interface {
 	Liveness(ctx echo.Context) error
 
 	GetAllCustomers(ctx echo.Context) error
+	AddCustomer(ctx echo.Context) error
 	GetAllProducts(ctx echo.Context) error
 }
 
@@ -23,9 +24,7 @@ type EchoServer struct {
 	DB   database.DatabaseClient
 }
 
-/**
-* a inicialização do servidor depende de uma entidade que implementa a interface de métodos do Server
- */
+// A inicialização do servidor depende de uma entidade que implementa a interface de métodos do Server
 func NewEchoServer(db database.DatabaseClient) Server {
 	server := &EchoServer{ // EchoServer deve implementar Server corretamente
 		echo: echo.New(),
@@ -44,6 +43,7 @@ func (e *EchoServer) registerRoutes() {
 
 	cg := e.echo.Group("/customers")
 	cg.GET("", e.GetAllCustomers)
+	cg.POST("", e.AddCustomer)
 
 	pg := e.echo.Group("/products")
 	pg.GET("", e.GetAllProducts)
