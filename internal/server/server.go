@@ -13,6 +13,9 @@ type Server interface {
 	Start() error
 	Readiness(ctx echo.Context) error
 	Liveness(ctx echo.Context) error
+
+	GetAllCustomers(ctx echo.Context) error
+	GetAllProducts(ctx echo.Context) error
 }
 
 type EchoServer struct {
@@ -20,8 +23,11 @@ type EchoServer struct {
 	DB   database.DatabaseClient
 }
 
+/**
+* a inicialização do servidor depende de uma entidade que implementa a interface de métodos do Server
+ */
 func NewEchoServer(db database.DatabaseClient) Server {
-	server := &EchoServer{
+	server := &EchoServer{ // EchoServer deve implementar Server corretamente
 		echo: echo.New(),
 		DB:   db,
 	}
@@ -30,6 +36,20 @@ func NewEchoServer(db database.DatabaseClient) Server {
 	return server
 }
 
+// métodos protegidos
+func (e *EchoServer) registerRoutes() {
+	// implementar routes
+	e.echo.GET("/readiness", e.Readiness)
+	e.echo.GET("/liveness", e.Liveness)
+
+	cg := e.echo.Group("/customers")
+	cg.GET("", e.GetAllCustomers)
+
+	pg := e.echo.Group("/products")
+	pg.GET("", e.GetAllProducts)
+}
+
+// implementações da interface Server
 func (e *EchoServer) Start() error {
 	if err := e.echo.Start("localhost:8080"); err != nil && err != http.ErrServerClosed {
 		log.Fatalf("server shutdown occurred: %s", err)
@@ -37,12 +57,6 @@ func (e *EchoServer) Start() error {
 	}
 
 	return nil
-}
-
-func (e *EchoServer) registerRoutes() {
-	// implementar routes
-	e.echo.GET("/readiness", e.Readiness)
-	e.echo.GET("/liveness", e.Liveness)
 }
 
 func (e EchoServer) Readiness(ctx echo.Context) error {

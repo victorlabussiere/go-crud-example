@@ -1,17 +1,22 @@
 package database
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"time"
 
 	"github.com/victorlabussiere/go-echo-gorm-example/internal/database/migrations"
+	"github.com/victorlabussiere/go-echo-gorm-example/internal/model"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 type DatabaseClient interface {
 	Ready() bool
+
+	GetAllCustomers(ctx context.Context) ([]model.Customer, error)
+	GetAllProducts(ctx context.Context) ([]model.Product, error)
 }
 
 type Client struct {
