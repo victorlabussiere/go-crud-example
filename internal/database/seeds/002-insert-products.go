@@ -18,11 +18,19 @@ func (c *InsertInitialProducts) Up(db *gorm.DB) error {
 	}
 
 	for _, product := range products {
-		if err := db.FirstOrCreate(&product, product.ID).Error; err != nil {
-			log.Fatalln("Erro na inserção dos dados", err.Error())
-			return err
+		if err := db.Where("name = ?", product.Name).First(&product).Error; err != nil {
+			if err == gorm.ErrRecordNotFound { // Se o produto não foi encontrado, cria um novo
+				if err := db.Create(&product).Error; err != nil {
+					log.Fatalln("Erro na inserção dos dados:", err.Error())
+					return err
+				}
+				log.Printf("Produto %s inserido com sucesso", product.Name)
+			} else {
+				log.Fatalln("Erro ao buscar o produto:", err.Error())
+				return err
+			}
 		} else {
-			log.Printf("Producto %s resolvido com sucesso", product.Name)
+			log.Printf("Produto %s já existe, não inserido", product.Name)
 		}
 	}
 	return nil

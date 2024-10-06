@@ -26,12 +26,20 @@ func (c *InsertInitialCustomers) Up(db *gorm.DB) error {
 		},
 	}
 	for _, customer := range customers {
-
-		if err := db.FirstOrCreate(&customer, customer.ID).Error; err != nil {
-			log.Fatalln("Erro na inserção dos dados", err.Error())
-			return err
+		// Usamos o e-mail como condição para a busca
+		if err := db.Where("email = ?", customer.Email).First(&customer).Error; err != nil {
+			if err == gorm.ErrRecordNotFound { // Se o cliente não foi encontrado, cria um novo
+				if err := db.Create(&customer).Error; err != nil {
+					log.Fatalln("Erro na inserção dos dados:", err.Error())
+					return err
+				}
+				log.Printf("Customer %v inserido com sucesso", customer.Name)
+			} else {
+				log.Fatalln("Erro de validação de customer:", err.Error())
+				return err
+			}
 		} else {
-			log.Printf("Customer %v resolvido com sucesso", customer.Name)
+			log.Printf("Customer %v já existe, não inserido", customer.Name)
 		}
 	}
 
