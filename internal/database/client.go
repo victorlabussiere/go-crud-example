@@ -17,8 +17,10 @@ type DatabaseClient interface {
 	Ready() bool
 
 	GetAllCustomers(ctx context.Context) ([]model.Customer, error)
-	GetAllProducts(ctx context.Context) ([]model.Product, error)
 	AddCustomer(ctx context.Context, customer *model.Customer) (*model.Customer, error)
+
+	GetAllProducts(ctx context.Context) ([]model.Product, error)
+	AddProduct(ctx context.Context, product *model.Product) (*model.Product, error)
 }
 
 type Client struct {
