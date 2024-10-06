@@ -12,9 +12,9 @@ type InsertInitialProducts struct{}
 func (c *InsertInitialProducts) Up(db *gorm.DB) error {
 	log.Println("Inserindo seeds 002-insert-products")
 	products := []model.Product{
-		{ID: "1", Name: "Telefone", Value: "3000", CreatedAt: nil, UpdatedAt: nil},
-		{ID: "2", Name: "Relogio", Value: "700", CreatedAt: nil, UpdatedAt: nil},
-		{ID: "3", Name: "Tênis", Value: "300", CreatedAt: nil, UpdatedAt: nil},
+		{ID: 1, Name: "Telefone", Value: "3000", CreatedAt: nil, UpdatedAt: nil},
+		{ID: 2, Name: "Relogio", Value: "700", CreatedAt: nil, UpdatedAt: nil},
+		{ID: 3, Name: "Tênis", Value: "300", CreatedAt: nil, UpdatedAt: nil},
 	}
 
 	for _, product := range products {
@@ -30,5 +30,5 @@ func (c *InsertInitialProducts) Up(db *gorm.DB) error {
 
 func (c *InsertInitialProducts) Down(db *gorm.DB) error {
 	log.Println("Revertendo seed 002")
-	return db.Where("id IN ?", []string{"", "1", "2", "3"}).Delete(&model.Product{}).Error
+	return db.Where("id IN ?", []int{1, 2, 3}).Delete(&model.Product{}).Error
 }
