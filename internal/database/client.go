@@ -17,6 +17,7 @@ type DatabaseClient interface {
 	Ready() bool
 
 	GetAllCustomers(ctx context.Context) ([]model.Customer, error)
+	GetCustomerById(ctx context.Context, ID int) (*model.Customer, error)
 	AddCustomer(ctx context.Context, customer *model.Customer) (*model.Customer, error)
 
 	GetAllProducts(ctx context.Context) ([]model.Product, error)
