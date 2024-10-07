@@ -18,6 +18,7 @@ type Server interface {
 	GetCustomerById(ctx echo.Context) error
 	AddCustomer(ctx echo.Context) error
 	UpdateCustomer(ctx echo.Context) error
+	DeleteCustomerById(ctx echo.Context) error
 
 	GetAllProducts(ctx echo.Context) error
 	AddProduct(ctx echo.Context) error
@@ -52,6 +53,7 @@ func (e *EchoServer) registerRoutes() {
 	customersGroup.GET("/:id", e.GetCustomerById)
 	customersGroup.POST("", e.AddCustomer)
 	customersGroup.PUT("/:id", e.UpdateCustomer)
+	customersGroup.DELETE("/:id", e.DeleteCustomerById)
 
 	productsGroup := e.echo.Group("/products")
 	productsGroup.GET("", e.GetAllProducts)
