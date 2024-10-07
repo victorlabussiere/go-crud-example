@@ -45,3 +45,26 @@ func (c Client) AddCustomer(ctx context.Context, customer *model.Customer) (*mod
 	return customer, nil
 
 }
+
+func (c Client) UpdateCustomer(ctx context.Context, customer *model.Customer) (*model.Customer, error) {
+	result := c.DB.WithContext(ctx).
+		Where("id = ?", customer.ID).
+		Updates(model.Customer{
+			Name:  customer.Name,
+			Email: customer.Email,
+		})
+
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrDuplicatedKey) {
+			return nil, &dberrors.ConflictError{}
+		}
+
+		return nil, result.Error
+	}
+
+	if result.RowsAffected == 0 {
+		return nil, &dberrors.NotFoundError{Entity: "Customer", ID: customer.ID}
+	}
+
+	return customer, nil
+}

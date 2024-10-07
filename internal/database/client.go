@@ -16,9 +16,10 @@ import (
 type DatabaseClient interface {
 	Ready() bool
 
+	AddCustomer(ctx context.Context, customer *model.Customer) (*model.Customer, error)
 	GetAllCustomers(ctx context.Context) ([]model.Customer, error)
 	GetCustomerById(ctx context.Context, ID int) (*model.Customer, error)
-	AddCustomer(ctx context.Context, customer *model.Customer) (*model.Customer, error)
+	UpdateCustomer(ctx context.Context, customer *model.Customer) (*model.Customer, error)
 
 	GetAllProducts(ctx context.Context) ([]model.Product, error)
 	AddProduct(ctx context.Context, product *model.Product) (*model.Product, error)
