@@ -15,10 +15,10 @@ func (c Client) GetAllCustomers(ctx context.Context) ([]model.Customer, error) {
 	return customers, result.Error
 }
 
-func (c Client) GetCustomerById(ctx context.Context, ID int) (*model.Customer, error) {
+func (c Client) GetCustomerById(ctx context.Context, ID uint) (*model.Customer, error) {
 	var customer = &model.Customer{}
 	result := c.DB.WithContext(ctx).
-		Where(&model.Customer{ID: uint(ID)}).
+		Where(&model.Customer{ID: ID}).
 		First(&customer)
 
 	if result.Error != nil {

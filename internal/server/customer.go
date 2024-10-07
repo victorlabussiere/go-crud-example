@@ -20,14 +20,13 @@ func (s *EchoServer) GetAllCustomers(ctx echo.Context) error {
 	return ctx.JSON(http.StatusOK, customers)
 }
 
-func (s *EchoServer) GetById(ctx echo.Context) error {
+func (s *EchoServer) GetCustomerById(ctx echo.Context) error {
 	idParam := ctx.Param("id")
 	ID, err := strconv.Atoi(idParam)
 	if err != nil {
 		return ctx.JSON(http.StatusUnsupportedMediaType, err)
 	}
-
-	customer, err := s.DB.GetCustomerById(ctx.Request().Context(), ID)
+	customer, err := s.DB.GetCustomerById(ctx.Request().Context(), uint(ID))
 	if err != nil {
 		switch err.(type) {
 		case *dberrors.NotFoundError:

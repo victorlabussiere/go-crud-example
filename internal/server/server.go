@@ -15,7 +15,7 @@ type Server interface {
 	Liveness(ctx echo.Context) error
 
 	GetAllCustomers(ctx echo.Context) error
-	GetById(ctx echo.Context) error
+	GetCustomerById(ctx echo.Context) error
 	AddCustomer(ctx echo.Context) error
 	UpdateCustomer(ctx echo.Context) error
 
@@ -49,7 +49,7 @@ func (e *EchoServer) registerRoutes() {
 
 	customersGroup := e.echo.Group("/customers")
 	customersGroup.GET("", e.GetAllCustomers)
-	customersGroup.GET("/:id", e.GetById)
+	customersGroup.GET("/:id", e.GetCustomerById)
 	customersGroup.POST("", e.AddCustomer)
 	customersGroup.PUT("/:id", e.UpdateCustomer)
 
