@@ -16,6 +16,7 @@ func RunMigrations(db *gorm.DB) error {
 
 	migrations := []Migration{
 		&CreateCustomerMigration{},
+		&CreateCategoryMigration{},
 		&CreateProductsMigration{},
 	}
 

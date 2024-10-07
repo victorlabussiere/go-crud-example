@@ -15,6 +15,7 @@ func RunSeeds(db *gorm.DB) error {
 	log.Println("Inicialiando seeds")
 	seeds := []Seed{
 		&InsertInitialCustomers{},
+		&InsertCategoryData{},
 		&InsertInitialProducts{},
 	}
 

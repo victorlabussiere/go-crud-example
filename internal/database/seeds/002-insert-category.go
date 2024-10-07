@@ -7,14 +7,13 @@ import (
 	"gorm.io/gorm"
 )
 
-type InsertInitialProducts struct{}
+type InsertCategoryData struct{}
 
-func (c *InsertInitialProducts) Up(db *gorm.DB) error {
-	log.Println("Inserindo seeds 002-insert-products")
-	products := []model.Product{
-		{Name: "Telefone", Value: 3000, CreatedAt: nil, UpdatedAt: nil},
-		{Name: "Relogio", Value: 700, CreatedAt: nil, UpdatedAt: nil},
-		{Name: "Tênis", Value: 300, CreatedAt: nil, UpdatedAt: nil},
+func (c *InsertCategoryData) Up(db *gorm.DB) error {
+	log.Println("Inserindo seeds 002-insert-category")
+	products := []model.Category{
+		{Name: "Roupa"},
+		{Name: "Eletônicos"},
 	}
 
 	for _, product := range products {
@@ -36,7 +35,7 @@ func (c *InsertInitialProducts) Up(db *gorm.DB) error {
 	return nil
 }
 
-func (c *InsertInitialProducts) Down(db *gorm.DB) error {
+func (c *InsertCategoryData) Down(db *gorm.DB) error {
 	log.Println("Revertendo seed 002")
 	return db.Where("name IN ?", []string{"Telefone", "Relogio", "Tênis"}).Delete(&model.Product{}).Error
 }
