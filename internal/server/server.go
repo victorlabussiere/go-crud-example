@@ -20,8 +20,11 @@ type Server interface {
 	UpdateCustomer(ctx echo.Context) error
 	DeleteCustomerById(ctx echo.Context) error
 
-	GetAllProducts(ctx echo.Context) error
 	AddProduct(ctx echo.Context) error
+	GetAllProducts(ctx echo.Context) error
+	GetProductById(ctx echo.Context) error
+
+	AddCategory(ctx echo.Context) error
 }
 
 type EchoServer struct {
@@ -54,8 +57,14 @@ func (e *EchoServer) registerRoutes() {
 	customersGroup.DELETE("/:id", e.DeleteCustomerById)
 
 	productsGroup := e.echo.Group("/products")
-	productsGroup.GET("", e.GetAllProducts)
 	productsGroup.POST("", e.AddProduct)
+	productsGroup.GET("", e.GetAllProducts)
+	productsGroup.GET("/:id", e.GetProductById)
+
+	categoriesGroup := e.echo.Group("/categories")
+	categoriesGroup.POST("", e.AddCategory)
+	categoriesGroup.GET("", e.GetAllCategories)
+	categoriesGroup.GET("/:id", e.GetCategoryById)
 }
 
 // implementações da interface Server
