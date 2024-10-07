@@ -36,3 +36,17 @@ func (c Client) GetProductById(ctx context.Context, ID uint) (*model.Product, er
 
 	return product, nil
 }
+
+func (c Client) GetProductByCategoryId(ctx context.Context, ID uint) ([]model.Product, error) {
+	var products []model.Product
+
+	result := c.DB.WithContext(ctx).Where("category_id = ?", ID).Find(&products)
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return nil, &dberrors.NotFoundError{Entity: "Product", ID: ID}
+		}
+		return nil, result.Error
+	}
+
+	return products, nil
+}

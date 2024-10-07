@@ -23,6 +23,7 @@ type Server interface {
 	AddProduct(ctx echo.Context) error
 	GetAllProducts(ctx echo.Context) error
 	GetProductById(ctx echo.Context) error
+	GetProductByCategoryId(ctx echo.Context) error
 
 	AddCategory(ctx echo.Context) error
 }
@@ -60,6 +61,7 @@ func (e *EchoServer) registerRoutes() {
 	productsGroup.POST("", e.AddProduct)
 	productsGroup.GET("", e.GetAllProducts)
 	productsGroup.GET("/:id", e.GetProductById)
+	productsGroup.GET("/category/:id", e.GetProductByCategoryId)
 
 	categoriesGroup := e.echo.Group("/categories")
 	categoriesGroup.POST("", e.AddCategory)

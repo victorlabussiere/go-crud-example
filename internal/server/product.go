@@ -57,3 +57,18 @@ func (s *EchoServer) GetProductById(ctx echo.Context) error {
 
 	return ctx.JSON(http.StatusOK, result)
 }
+
+func (s *EchoServer) GetProductByCategoryId(ctx echo.Context) error {
+	var paramCategoryId = ctx.Param("id")
+	ID, err := strconv.Atoi(paramCategoryId)
+	if err != nil {
+		return ctx.JSON(http.StatusUnsupportedMediaType, err)
+	}
+
+	result, err := s.DB.GetProductByCategoryId(ctx.Request().Context(), uint(ID))
+	if err != nil {
+		return ctx.JSON(http.StatusInternalServerError, err)
+	}
+
+	return ctx.JSON(http.StatusOK, result)
+}
