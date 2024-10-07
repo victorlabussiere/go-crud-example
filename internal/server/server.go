@@ -22,8 +22,6 @@ type Server interface {
 
 	GetAllProducts(ctx echo.Context) error
 	AddProduct(ctx echo.Context) error
-
-	AddPurchase(ctx echo.Context) error
 }
 
 type EchoServer struct {
@@ -58,9 +56,6 @@ func (e *EchoServer) registerRoutes() {
 	productsGroup := e.echo.Group("/products")
 	productsGroup.GET("", e.GetAllProducts)
 	productsGroup.POST("", e.AddProduct)
-
-	purchaseGroup := e.echo.Group("/purchase")
-	purchaseGroup.POST("", e.AddPurchase)
 }
 
 // implementações da interface Server

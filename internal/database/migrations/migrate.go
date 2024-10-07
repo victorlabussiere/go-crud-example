@@ -17,7 +17,6 @@ func RunMigrations(db *gorm.DB) error {
 	migrations := []Migration{
 		&CreateCustomerMigration{},
 		&CreateProductsMigration{},
-		&CreatePurchaseMigration{},
 	}
 
 	for _, migration := range migrations {
@@ -34,7 +33,6 @@ func RunMigrations(db *gorm.DB) error {
 func RollBackMigrations(db *gorm.DB) error {
 	log.Println("Iniciando rollback no banco de dados.")
 	migrations := []Migration{
-		&CreatePurchaseMigration{},
 		&CreateProductsMigration{},
 		&CreateCustomerMigration{},
 	}

@@ -37,7 +37,6 @@ func (s *EchoServer) GetCustomerById(ctx echo.Context) error {
 	}
 
 	return ctx.JSON(http.StatusOK, customer)
-
 }
 
 func (s *EchoServer) AddCustomer(ctx echo.Context) error {
